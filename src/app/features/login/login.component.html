@@ -1,0 +1,102 @@
+<section >
+    <div class="container  grid grid-cols-1 lg:grid-cols-2 bg-white p-4 mx-auto lg:mt-4">
+        <!-- LEFT-SIDE-REGISTER -->
+        <div class="hidden lg:block mt-12 flex-col justify-center ">
+        <img src="/olamma_image.png" alt="Cover_image" >
+        
+        </div>
+                        <!-- RIGHT-SIDE-REGISTER -->
+        <div>
+            <form [formGroup] ="loginForm" (ngSubmit)="submitLigin()" class="rounded-xl shadow-[0_-4px_12px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.15)] grid gap-4 mt-10 pt-3 pb-3 ps-2 pe-2 me-5 justify-content-center align-items-center">
+                <div>
+                    <h2 class="text-[#8A9A4B] text-3xl lg:text-[2.5rem] ps-2 pb-0 font-bold leading-tight">Log in to OLamma Posts</h2>
+                <h3 class="text-[#556B2F] text-[1.5rem] ps-2 pt-0 leading-tight">Log in and continue your social journey.</h3>
+                </div>
+
+                        <!-- email-input -->
+                <div>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 z-20 text-[#7C8C3D] pointer-events-none">
+    <i class="fa-solid fa-envelope"></i>
+  </span>
+    <input type="text" id="email" formControlName="email"
+       [class]="{
+        'border-red-500': loginForm.get('email')?.invalid &&  loginForm.get('email')?.touched,
+        'border-[#A3B263]':loginForm.get('email')?.valid
+    }"
+    class="block pl-11 pr-2.5 px-2.5 pb-2.5 pt-4 w-full text-sm text-heading bg-transparent rounded-base border-1 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-[#A3B263] peer" placeholder=" " />
+    <label for="email" class="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-neutral-primary px-2 peer-focus:px-2 peer-focus:text-fg-[#7C8C3D] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-7">Email address</label>
+</div>
+
+                 @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <div>
+                @if (loginForm.get("email")?.hasError("required")) {
+                    <p class="mt-1 text-xs text-red-600">Email is required.</p>
+                }
+               @if (loginForm.get("email")?.hasError("email")) {
+                 <p class="mt-2 text-xs text-red-600">Please enter a valid email address..</p>
+               }
+            </div>
+          }
+                </div>
+
+                    <!--password-input  -->
+                    <div>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 z-20 text-[#7C8C3D] pointer-events-none">
+    <i class="fa-solid fa-key"></i>
+  </span>
+    <input #inputTogglePassword type="password" id="password" formControlName="password"
+             [class]="{
+        'border-red-500': loginForm.get('password')?.invalid &&  loginForm.get('password')?.touched,
+        'border-[#A3B263]':loginForm.get('password')?.valid
+    }"
+    class="block pl-11 pr-2.5 px-2.5 pb-2.5 pt-4 w-full text-sm text-heading bg-transparent rounded-base border-1 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-[#A3B263] peer" placeholder=" " />
+    <label for="password" class="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-neutral-primary px-2 peer-focus:px-2 peer-focus:text-fg-[#7C8C3D] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-7">Password</label>
+
+      @if(inputTogglePassword.type == "text"){
+            <div class="absolute top-1/2 text-[#7C8C3D] cursor-pointer -translate-y-1/2 right-4">
+                <i (click)="toggleEye(inputTogglePassword)" class="fa-solid fa-eye"></i>
+            </div>
+        }
+         @if(inputTogglePassword.type == "password"){
+            <div class="absolute top-1/2 text-[#7C8C3D] cursor-pointer -translate-y-1/2 right-4">
+                <i (click)="toggleEye(inputTogglePassword)" class="fa-solid fa-eye-slash"></i>
+            </div>
+        }
+</div>
+      
+     @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <div>
+                @if (loginForm.get("password")?.hasError("required")) {
+                    <p class="mt-1 text-xs text-red-600">Password is required.</p>
+                }
+               @if (loginForm.get("password")?.hasError("pattern")) {
+                 <p class="mt-1 text-xs text-red-600">Password must include uppercase, lowercase, number, and special character.</p>
+               }
+            </div>
+          }
+                </div>
+        
+    @if (loginrErrorMessage()) {
+  <div class="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3" role="alert">
+    <i class="fa-solid fa-circle-exclamation mt-0.5 text-red-500"></i>
+    <p class="text-sm font-medium text-red-700">{{ loginrErrorMessage() }}</p>
+  </div>
+}
+
+@if (loginuccessMessage()) {
+  <div class="flex items-start gap-3 rounded-xl border border-[#A3B263] bg-[#F1F5E4] px-4 py-3" role="status">
+    <i class="fa-solid fa-circle-check mt-0.5 text-[#556B2F]"></i>
+    <p class="text-sm font-medium text-[#3B4A1F]">{{ loginuccessMessage() }}</p>
+  </div>
+}
+                <button type="submit" class="bg-[#556B2F] text-[#C9D69A] rounded-full text-[1.1rem] cursor-pointer p-2">Submit @if (isLoading()) {
+                    <i class="fa-solid fa-spinner fa-spin fa-canvas-square"></i>
+                }</button>
+                
+                <button type="button" routerLink="/register" class="hover:bg-[#556B2F] hover:text-[#C9D69A] text-[#3B4A1F] rounded-full border border-[#A3B263] text-[1.1rem] cursor-pointer p-2">Create new account</button>
+            </form>
+        </div>
+    </div>
+</section>

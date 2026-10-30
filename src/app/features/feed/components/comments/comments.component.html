@@ -1,0 +1,262 @@
+<!-- <div class="mx-5 mb-5 mt-3 border-t border-[#C9D69A] pt-3">
+
+
+ 
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h3 class="text-sm font-bold text-[#3B4A1F]">Comments</h3>
+      <span class="bg-[#C9D69A]/50 text-[#3B4A1F] text-xs font-semibold rounded-full px-2 py-0.5">
+        {{ postComment().length }}
+      </span>
+    </div>
+    <select class="cursor-pointer rounded-lg border border-[#C9D69A] bg-white px-3 py-1 text-xs font-semibold text-[#3B4A1F] focus:outline-none focus:ring-2 focus:ring-[#C9D69A]">
+      <option>Most relevant</option>
+      <option>Newest</option>
+    </select>
+  </div>
+
+  @for (comment of postComment(); track comment._id) {
+    <div class="flex items-start gap-2 mt-4">
+      @if (comment.commentCreator?.photo) {
+        <img [src]="comment.commentCreator.photo" [alt]="comment.commentCreator.name"
+          class="w-9 h-9 rounded-full object-cover shrink-0" />
+      } @else {
+        <i class="fa-solid fa-circle-user text-4xl text-[#7C8C3D] shrink-0"></i>
+      }
+
+      <div class="min-w-0 flex-1">
+        <div class="relative inline-block max-w-full bg-[#F1F5E4] rounded-2xl px-4 py-2">
+          <h4 class="text-sm font-bold text-[#3B4A1F]">{{ comment.commentCreator?.name }}</h4>
+          <p class="text-xs text-[#7C8C3D]">&#64;{{ comment.commentCreator?.username }}</p>
+          <p class="mt-1 text-sm text-[#3B4A1F] break-words">{{ comment.content }}</p>
+
+          @if (comment.likes?.length) {
+            <span class="absolute -bottom-3 end-2 inline-flex items-center gap-1 bg-white shadow rounded-full px-2 py-0.5">
+              <span class="w-4 h-4 rounded-full bg-[#556B2F] text-white text-[9px] flex items-center justify-center">
+                <i class="fa-solid fa-thumbs-up"></i>
+              </span>
+              <span class="text-[11px] font-normal text-[#7C8C3D]">{{ comment.likes.length }}</span>
+            </span>
+          }
+        </div>
+
+        <div class="flex items-center gap-4 px-3 mt-1 text-xs font-semibold text-[#7C8C3D]">
+          <button type="button" class="hover:underline hover:text-[#556B2F] cursor-pointer">Like</button>
+          <button type="button" class="hover:underline hover:text-[#556B2F] cursor-pointer">Reply</button>
+          <span class="font-normal">{{ comment.createdAt }}</span>
+        </div>
+
+        @if (comment.repliesCount > 0) {
+          <button type="button" class="mt-2 ms-3 text-xs font-semibold text-[#556B2F] hover:underline cursor-pointer">
+            View {{ comment.repliesCount }} {{ comment.repliesCount === 1 ? 'reply' : 'replies' }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (postComment().length > 0) {
+    <button type="button" class="mt-5 text-sm font-semibold text-[#556B2F] hover:underline cursor-pointer">
+      View more comments
+    </button>
+  }
+
+  <div class="flex items-center gap-2 mt-4">
+    <img src="/IMG_0869.jpg" alt="User" class="w-9 h-9 rounded-full object-cover shrink-0" />
+
+    <div class="relative flex-1">
+      <input type="text" placeholder="Comment as Soolaa..."
+        class="w-full rounded-full bg-[#F1F5E4] ps-4 pe-20 py-2.5 text-sm text-[#3B4A1F] placeholder:text-[#7C8C3D]/70 focus:outline-none focus:ring-2 focus:ring-[#C9D69A]" />
+      <div class="absolute end-12 top-1/2 -translate-y-1/2 flex items-center gap-2 text-[#7C8C3D]">
+        <button type="button" class="hover:text-[#556B2F] cursor-pointer"><i class="fa-regular fa-image"></i></button>
+        <button type="button" class="hover:text-[#556B2F] cursor-pointer"><i class="fa-regular fa-face-smile"></i></button>
+      </div>
+
+      <button type="button"
+        class="absolute end-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full text-[#556B2F] hover:bg-[#C9D69A] cursor-pointer">
+        <i class="fa-regular fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+<div class="mx-5 mb-5 mt-3 border-t border-[#C9D69A] pt-3">
+
+  <!-- header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h3 class="text-sm font-bold text-[#3B4A1F]">Comments</h3>
+      <span class="bg-[#C9D69A]/50 text-[#3B4A1F] text-xs font-semibold rounded-full px-2 py-0.5">
+        {{ postComment().length }}
+      </span>
+    </div>
+    <select (change)="setSort($event)"
+      class="cursor-pointer rounded-lg border border-[#C9D69A] bg-white px-3 py-1 text-xs font-semibold text-[#3B4A1F] focus:outline-none focus:ring-2 focus:ring-[#C9D69A]">
+      <option>Most relevant</option>
+      <option>Newest</option>
+    </select>
+  </div>
+
+  @if (loading()) {
+    <p class="mt-4 text-center text-xs text-[#7C8C3D]">
+      <i class="fa-solid fa-spinner fa-spin"></i> Loading comments...
+    </p>
+  }
+
+  <!-- list -->
+  @for (comment of sortedComments(); track comment._id) {
+    <div class="flex items-start gap-2 mt-4">
+      @if (comment.commentCreator?.photo) {
+        <img [src]="comment.commentCreator.photo" [alt]="comment.commentCreator.name"
+          class="w-9 h-9 rounded-full object-cover shrink-0" />
+      } @else {
+        <i class="fa-solid fa-circle-user text-4xl text-[#7C8C3D] shrink-0"></i>
+      }
+
+      <div class="min-w-0 flex-1">
+
+        @if (editingId() === comment._id) {
+          <input type="text" [formControl]="editContent" (keyup.enter)="saveEdit(comment)"
+            class="w-full rounded-full border border-[#C9D69A] bg-white px-4 py-2 text-sm text-[#3B4A1F] focus:outline-none focus:border-[#A3B263] focus:ring-2 focus:ring-[#C9D69A]" />
+          <div class="mt-1 flex gap-3 px-3 text-xs font-semibold">
+            <button type="button" (click)="saveEdit(comment)" class="cursor-pointer text-[#556B2F] hover:underline">Save</button>
+            <button type="button" (click)="cancelEdit()" class="cursor-pointer text-[#7C8C3D] hover:underline">Cancel</button>
+          </div>
+        } @else {
+          <div class="relative inline-block max-w-full bg-[#F1F5E4] rounded-2xl px-4 py-2">
+            <h4 class="text-sm font-bold text-[#3B4A1F]">{{ comment.commentCreator?.name }}</h4>
+            <p class="text-xs text-[#7C8C3D]">&#64;{{ comment.commentCreator?.username }}</p>
+            <p class="mt-1 text-sm text-[#3B4A1F] break-words">{{ comment.content }}</p>
+
+            @if (comment.likes?.length) {
+              <span class="absolute -bottom-3 end-2 inline-flex items-center gap-1 bg-white shadow rounded-full px-2 py-0.5">
+                <span class="w-4 h-4 rounded-full bg-[#556B2F] text-white text-[9px] flex items-center justify-center">
+                  <i class="fa-solid fa-thumbs-up"></i>
+                </span>
+                <span class="text-[11px] font-normal text-[#7C8C3D]">{{ comment.likes.length }}</span>
+              </span>
+            }
+          </div>
+
+          <!-- actions -->
+          <div class="flex flex-wrap items-center gap-4 px-3 mt-1 text-xs font-semibold text-[#7C8C3D]">
+            <button type="button" (click)="toggleLike(comment)"
+              class="cursor-pointer hover:underline"
+              [class]="isLiked(comment) ? 'text-[#556B2F]' : 'hover:text-[#556B2F]'">
+              {{ isLiked(comment) ? 'Liked' : 'Like' }}
+            </button>
+            <button type="button" (click)="startReply(comment)"
+              class="hover:underline hover:text-[#556B2F] cursor-pointer">Reply</button>
+            <span class="font-normal">{{ comment.createdAt | date: 'MMM d, h:mm a' }}</span>
+
+            @if (isMine(comment)) {
+              <button type="button" (click)="startEdit(comment)" class="hover:underline hover:text-[#556B2F] cursor-pointer">Edit</button>
+              <button type="button" (click)="deleteComment(comment)" class="text-red-600 hover:underline cursor-pointer">Delete</button>
+            }
+          </div>
+
+          <!-- view replies -->
+          @if (comment.repliesCount > 0) {
+            <button type="button" (click)="toggleReplies(comment)"
+              class="mt-2 ms-3 text-xs font-semibold text-[#556B2F] hover:underline cursor-pointer">
+              <i class="fa-solid" [class]="openReplies().includes(comment._id) ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+              {{ openReplies().includes(comment._id) ? 'Hide' : 'View' }}
+              {{ comment.repliesCount }} {{ comment.repliesCount === 1 ? 'reply' : 'replies' }}
+            </button>
+          }
+
+          <!-- replies -->
+          @if (openReplies().includes(comment._id)) {
+            <div class="mt-2 ms-3 border-s-2 border-[#C9D69A] ps-3">
+
+              @if (loadingRepliesId() === comment._id) {
+                <p class="text-xs text-[#7C8C3D]"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>
+              }
+
+              @for (r of replies()[comment._id]; track r._id) {
+                <div class="mt-3 flex items-start gap-2">
+                  <img [src]="r.commentCreator?.photo" [alt]="r.commentCreator?.name"
+                    class="h-7 w-7 shrink-0 rounded-full object-cover" />
+
+                  <div class="min-w-0 flex-1">
+                    <div class="relative inline-block max-w-full rounded-2xl bg-[#F1F5E4] px-3 py-1.5">
+                      <h5 class="text-xs font-bold text-[#3B4A1F]">{{ r.commentCreator?.name }}</h5>
+                      <p class="break-words text-sm text-[#3B4A1F]">{{ r.content }}</p>
+
+                      @if (r.likes?.length) {
+                        <span class="absolute -bottom-3 end-2 inline-flex items-center gap-1 rounded-full bg-white px-1.5 py-0.5 shadow">
+                          <span class="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#556B2F] text-[8px] text-white">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                          </span>
+                          <span class="text-[10px] text-[#7C8C3D]">{{ r.likes.length }}</span>
+                        </span>
+                      }
+                    </div>
+
+                    <div class="mt-1 flex items-center gap-3 px-2 text-[11px] font-semibold text-[#7C8C3D]">
+                      <button type="button" (click)="toggleLike(r)" class="cursor-pointer hover:underline"
+                        [class]="isLiked(r) ? 'text-[#556B2F]' : 'hover:text-[#556B2F]'">
+                        {{ isLiked(r) ? 'Liked' : 'Like' }}
+                      </button>
+                      <span class="font-normal">{{ r.createdAt | date: 'MMM d, h:mm a' }}</span>
+                      @if (isMine(r)) {
+                        <button type="button" (click)="deleteReply(comment, r)"
+                          class="cursor-pointer text-red-600 hover:underline">Delete</button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- reply box -->
+          @if (replyingTo() === comment._id) {
+            <div class="mt-3 ms-3 flex items-center gap-2">
+              <img [src]="loggedUser.photo" [alt]="loggedUser.name" class="h-7 w-7 shrink-0 rounded-full object-cover" />
+              <div class="relative flex-1">
+                <input type="text" [formControl]="replyControl" (keyup.enter)="sendReply(comment)"
+                  [placeholder]="'Reply to ' + comment.commentCreator?.name + '...'"
+                  class="w-full rounded-full bg-[#F1F5E4] py-2 ps-4 pe-10 text-sm text-[#3B4A1F] placeholder:text-[#7C8C3D]/70 focus:outline-none focus:ring-2 focus:ring-[#C9D69A]" />
+                <button type="button" (click)="sendReply(comment)"
+                  class="absolute end-1 top-1/2 h-7 w-7 -translate-y-1/2 cursor-pointer rounded-full text-[#556B2F] hover:bg-[#C9D69A]">
+                  <i class="fa-regular fa-paper-plane text-sm"></i>
+                </button>
+              </div>
+              <button type="button" (click)="cancelReply()"
+                class="cursor-pointer text-xs font-semibold text-[#7C8C3D] hover:underline">Cancel</button>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading() && postComment().length === 0) {
+    <p class="mt-4 text-center text-xs text-[#7C8C3D]">No comments yet. Be the first!</p>
+  }
+
+  <!-- add comment -->
+  <div class="flex items-center gap-2 mt-5">
+    <img [src]="loggedUser.photo" [alt]="loggedUser.name" class="w-9 h-9 rounded-full object-cover shrink-0" />
+
+    <div class="relative flex-1">
+      <input type="text" [formControl]="newComment" (keyup.enter)="addComment()"
+        [placeholder]="'Comment as ' + loggedUser.name + '...'"
+        class="w-full rounded-full bg-[#F1F5E4] ps-4 pe-20 py-2.5 text-sm text-[#3B4A1F] placeholder:text-[#7C8C3D]/70 focus:outline-none focus:ring-2 focus:ring-[#C9D69A]" />
+
+      <div class="absolute end-12 top-1/2 -translate-y-1/2 flex items-center gap-2 text-[#7C8C3D]">
+        <button type="button" class="hover:text-[#556B2F] cursor-pointer"><i class="fa-regular fa-image"></i></button>
+        <button type="button" class="hover:text-[#556B2F] cursor-pointer"><i class="fa-regular fa-face-smile"></i></button>
+      </div>
+
+      <button type="button" (click)="addComment()"
+        class="absolute end-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full text-[#556B2F] hover:bg-[#C9D69A] cursor-pointer">
+        <i class="fa-regular fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>

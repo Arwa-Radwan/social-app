@@ -1,0 +1,62 @@
+<!-- counters -->
+<div class="flex flex-wrap items-center justify-between gap-2 px-5 pt-3 text-sm text-[#7C8C3D]">
+  <span (click)="openLikes()" class="inline-flex cursor-pointer items-center gap-2 hover:underline">
+    <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#556B2F] text-xs text-white">
+      <i class="fa-solid fa-thumbs-up"></i>
+    </span>
+    {{ likes().length }} likes
+  </span>
+
+  <div class="flex items-center gap-3">
+    <span><i class="fa-solid fa-retweet"></i> {{ sharesCount() }} shares</span>
+    <span (click)="toggleComments()" class="cursor-pointer hover:underline">{{ post().commentsCount }} comments</span>
+    @if (showDetailsLink()) {
+      <a [routerLink]="['/post-details', post()._id]"
+        class="cursor-pointer font-semibold text-[#556B2F] hover:underline">View details</a>
+    }
+  </div>
+</div>
+
+<!-- actions -->
+<div class="mx-5 mb-2 mt-3 grid grid-cols-3 border-t border-[#C9D69A] pt-1">
+  <button type="button" (click)="toggleLike()"
+    class="flex cursor-pointer items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium hover:bg-[#C9D69A]/40"
+    [class]="isLiked() ? 'text-[#556B2F]' : 'text-[#3B4A1F]'">
+    <i [class]="isLiked() ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+    {{ isLiked() ? 'Liked' : 'Like' }}
+  </button>
+
+  <button type="button" (click)="toggleComments()"
+    class="flex cursor-pointer items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-[#3B4A1F] hover:bg-[#C9D69A]/40">
+    <i class="fa-regular fa-comment"></i> Comment
+  </button>
+
+  <button type="button" (click)="startShare()"
+    class="flex cursor-pointer items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-[#3B4A1F] hover:bg-[#C9D69A]/40">
+    <i class="fa-solid fa-share-nodes"></i> Share
+  </button>
+</div>
+
+<!-- share box -->
+@if (sharing()) {
+  <div class="mx-5 mb-3 rounded-xl border border-[#C9D69A] bg-[#F7F9EE] p-3">
+    <textarea [formControl]="shareBody" rows="2" placeholder="Say something about this post..."
+      class="w-full resize-none rounded-lg border border-[#C9D69A] bg-white p-3 text-sm text-[#3B4A1F] placeholder:text-[#7C8C3D]/70 focus:outline-none focus:border-[#A3B263] focus:ring-2 focus:ring-[#C9D69A]"></textarea>
+
+    <div class="mt-2 flex items-center justify-end gap-2">
+      <button type="button" (click)="sharing.set(false)"
+        class="cursor-pointer rounded-lg border border-[#C9D69A] px-4 py-1.5 text-sm font-medium text-[#3B4A1F] hover:bg-[#C9D69A]/40">
+        Cancel
+      </button>
+      <button type="button" (click)="confirmShare()"
+        class="cursor-pointer rounded-lg bg-[#556B2F] px-4 py-1.5 text-sm font-semibold text-white hover:bg-[#3B4A1F]">
+        Share now
+      </button>
+    </div>
+  </div>
+}
+
+<!-- comments -->
+@if (showComments()) {
+  <app-comments [postId]="post()._id"></app-comments>
+}

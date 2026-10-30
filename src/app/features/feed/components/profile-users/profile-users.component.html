@@ -1,0 +1,98 @@
+<div class="mx-auto max-w-5xl px-4 py-6 mt-20">
+
+  <!-- Back -->
+  <button type="button" (click)="goBack()"
+    class="mb-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[#C9D69A] bg-white px-5 py-3 text-sm font-semibold text-[#3B4A1F] shadow-sm hover:bg-[#C9D69A]/40">
+    <i class="fa-solid fa-arrow-left text-xs"></i> Back
+  </button>
+
+  <!-- profile card -->
+  <section class="overflow-hidden rounded-2xl bg-white shadow-lg">
+
+    <!-- cover -->
+<div class="h-48 w-full bg-gradient-to-br from-[#3B4A1F] via-[#556B2F] to-[#A3B263] sm:h-60">
+  @if (profileUserData().cover) {
+    <img [src]="profileUserData().cover" alt="cover" class="h-full w-full object-cover" />
+  }
+</div>
+
+    <!-- info -->
+    <div class="relative px-6 pb-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+
+        <div class="flex items-end gap-4">
+          <img [src]="profileUserData().photo" [alt]="profileUserData().name"
+            class="-mt-14 h-28 w-28 rounded-full border-4 border-white object-cover shadow-md" />
+          <div class="pb-1">
+            <h2 class="text-xl font-bold text-[#3B4A1F] sm:text-2xl">{{profileUserData().name}}</h2>
+            <p class="text-sm text-[#7C8C3D]">@{{profileUserData().username}}</p>
+          </div>
+        </div>
+
+   <button type="button" (click)="toggleFollow()"
+  class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-semibold transition"
+  [class]="isFollowing()
+    ? 'border-[#C9D69A] bg-white text-[#3B4A1F] hover:bg-[#C9D69A]/40'
+    : 'border-[#556B2F] bg-[#556B2F] text-white hover:bg-[#3B4A1F]'">
+  @if (isFollowing()) {
+    <i class="fa-solid fa-check text-xs"></i> Following
+  } @else {
+    <i class="fa-solid fa-user-plus text-xs"></i> Follow
+  }
+</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- post card -->
+@for (post of profileUserDataPosts(); track post._id) {
+  <article class="mt-5 overflow-hidden rounded-xl bg-white shadow-lg">
+
+    <div class="flex items-center justify-between border-b border-[#C9D69A]/60 px-5 py-4">
+      <div class="flex items-center gap-3">
+        <img [src]="post.user.photo" [alt]="post.user.name" class="h-11 w-11 rounded-full object-cover" />
+        <div>
+          <h3 class="text-sm font-bold text-[#3B4A1F]">{{ post.user.name }}</h3>
+          <p class="flex items-center gap-2 text-xs text-[#7C8C3D]">
+            <span>&#64;{{ post.user.username }}</span>
+            <span>·</span>
+            <span>{{ post.createdAt |date : "short"}}</span>
+            <span>·</span>
+            <span class="inline-flex items-center gap-1">
+              <i class="fa-solid fa-earth-americas text-[10px]"></i> {{ post.privacy }}
+            </span>
+          </p>
+        </div>
+      </div>
+      <button type="button" class="h-9 w-9 cursor-pointer rounded-full text-[#3B4A1F] hover:bg-[#C9D69A]/50">
+        <i class="fa-solid fa-ellipsis"></i>
+      </button>
+    </div>
+
+    @if (post.body) {
+      <p class="px-5 py-4 text-sm text-[#3B4A1F]">{{ post.body }}</p>
+    }
+
+    @if (post.image) {
+      <img [src]="post.image" [alt]="post.body" class="w-full object-cover" />
+    }
+
+    <!-- <div class="flex flex-wrap items-center justify-between gap-2 px-5 pt-4 text-sm text-[#7C8C3D]">
+      <span class="inline-flex items-center gap-2">
+        <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#556B2F] text-xs text-white">
+          <i class="fa-solid fa-thumbs-up"></i>
+        </span>
+        {{ post.likesCount }} likes
+      </span>
+      <div class="flex items-center gap-3">
+        <span><i class="fa-solid fa-retweet"></i> {{ post.sharesCount }} shares</span>
+        <span>{{ post.commentsCount }} comments</span>
+        <a [routerLink]="['/post-details', post._id]"
+          class="cursor-pointer font-semibold text-[#556B2F] hover:underline">View details</a>
+      </div>
+    </div> -->
+<app-post-actions [post]="post" ></app-post-actions>
+
+  </article>
+}
+</div>

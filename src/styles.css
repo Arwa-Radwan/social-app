@@ -1,3 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@import 'ngx-toastr/toastr';
+@utility container{
+    margin:auto;
+}
+@theme {
+  --font-sans: "Edu QLD Hand", "Cairo", ui-sans-serif, system-ui, sans-serif;
+}
+:root{
+    /* --main-color:#00298D;
+    --secondry-color:#F0F2F5; */
+  --olive-900: #2F3B17;
+  --olive-800: #494e40;
+  --olive-700: #556B2F;
+  --olive-600: #7C8C3D;
+  --olive-500: #8A9A4B;
+  --olive-400: #9BB05A;
+  --olive-300: #A3B263;
+  --olive-200: #C9D69A;
+  --olive-100: #E6EBC8;
+  --olive-50:  #F4F6E4;
+  --gray-line: #E4E8D2;
+  --white:     #FFFFFF;
+}
+.privacy-select,
+.privacy-select::picker(select) {
+  appearance: base-select;
+}
+
+.privacy-select::picker-icon {
+  display: none; /* عندك سهم Font Awesome جاهز */
+}
+
+.privacy-select::picker(select) {
+  background: #F4F7E8;
+  border: 1px solid #C9D69A;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.privacy-select option {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #3B4A1F;
+}
+
+.privacy-select option:hover,
+.privacy-select option:focus {
+  background: #C9D69A;
+}
+
+.privacy-select option:checked {
+  background: #A3B263;
+  color: #fff;
+}
+
+.privacy-select option::checkmark {
+  display: none;
+}
+app-left-side-feed,
+app-middle-feed,
+app-right-side-feed {
+  display: block;
+}

@@ -1,0 +1,55 @@
+@if (dialog.isOpen()) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true">
+
+    <!-- خلفية معتمة -->
+    <div class="absolute inset-0 bg-[#3B4A1F]/50 backdrop-blur-sm" (click)="dialog.close()"></div>
+
+    <!-- النافذة -->
+    <div class="relative flex max-h-[80vh] w-full max-w-sm flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+
+      <!-- header -->
+      <div class="flex items-center justify-between border-b border-[#C9D69A]/60 px-5 py-4">
+        <h3 class="flex items-center gap-2 font-bold text-[#3B4A1F]">
+          <span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#556B2F] text-xs text-white">
+            <i class="fa-solid fa-thumbs-up"></i>
+          </span>
+          Likes
+          <span class="rounded-full bg-[#C9D69A]/50 px-2 py-0.5 text-xs font-semibold">{{ dialog.users().length }}</span>
+        </h3>
+        <button type="button" (click)="dialog.close()"
+          class="h-8 w-8 cursor-pointer rounded-full text-[#3B4A1F] hover:bg-[#C9D69A]/50">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- body -->
+      <div class="overflow-y-auto p-2">
+
+        @if (dialog.loading()) {
+          <p class="py-10 text-center text-sm text-[#7C8C3D]">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading...
+          </p>
+        }
+
+        @for (u of dialog.users(); track u._id) {
+          <a [routerLink]="['/userProfile', u._id]" (click)="dialog.close()"
+            class="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-[#F7F9EE]">
+            <img [src]="u.photo" [alt]="u.name" class="h-11 w-11 shrink-0 rounded-full object-cover" />
+            <div class="min-w-0 flex-1">
+              <h4 class="truncate text-sm font-bold text-[#3B4A1F]">{{ u.name }}</h4>
+              <p class="truncate text-xs text-[#7C8C3D]">&#64;{{ u.username }}</p>
+            </div>
+            <i class="fa-solid fa-thumbs-up text-sm text-[#556B2F]"></i>
+          </a>
+        }
+
+        @if (!dialog.loading() && dialog.users().length === 0) {
+          <div class="px-5 py-10 text-center">
+            <i class="fa-regular fa-thumbs-up text-3xl text-[#C9D69A]"></i>
+            <p class="mt-3 text-sm text-[#7C8C3D]">No likes yet</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

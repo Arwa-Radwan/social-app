@@ -1,0 +1,85 @@
+
+
+<nav class="bg-neutral-primary fixed w-full z-20 top-0 start-0 border-b border-default">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a routerLink="/aboutUs" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="/olamma_logo.png" class="h-7" alt="olamma_logo">
+        <span class="self-center text-xl text-heading font-semibold whitespace-nowrap">OLamma</span>
+    </a>
+
+
+    <!-- //////////////////////////// -->
+    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+
+    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
+    class="cursor-pointer inline-flex items-center gap-2 bg-white border border-[#C9D69A] hover:bg-[#C9D69A]/30 focus:ring-4 focus:ring-[#C9D69A] rounded-full ps-1.5 pe-3 py-1.5 text-sm font-medium text-[#3B4A1F] focus:outline-none"
+    type="button">
+    <img [src]="userPhoto() ?? loggedUserData().photo" [alt]="loggedUserData().name" class="w-10 h-10 rounded-full object-cover" />
+    <span class="hidden sm:inline">{{loggedUserData().name}}</span>
+    <i class="fa-solid fa-bars text-[#7C8C3D]"></i>
+  </button>
+
+  <!-- Dropdown menu -->
+  <div id="dropdownDivider"
+    class="z-10 hidden bg-white border border-[#A3B263] rounded-lg divide-y divide-[#C9D69A] shadow-lg w-44">
+    <ul class="p-2 text-sm text-[#3B4A1F] font-medium" aria-labelledby="dropdownDividerButton">
+      <li>
+        <a routerLink="/profile" class="inline-flex items-center w-full p-2 hover:bg-[#C9D69A] rounded"> <i class="fa-regular fa-user pe-1"></i>  Profile</a>
+      </li>
+      <li>
+        <a routerLink="/settings" class="inline-flex items-center w-full p-2 hover:bg-[#C9D69A] rounded"> <i class="fa-solid fa-gear pe-1"></i>  Settings</a>
+      </li>
+
+    </ul>
+  <div class="p-2 text-sm text-red-600 font-medium">
+  <button type="button" (click)="logout()"
+    class="inline-flex items-center w-full p-2 hover:bg-red-200 rounded cursor-pointer">
+    <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i> Logout
+  </button>
+</div>
+  </div>
+</div>
+
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary">
+        <li>
+          <a routerLink="/feed" aria-current="page"
+   class="block py-2 px-3 rounded-sm bg-[#C9D69A] hover:text-[#556B2F] text-[#3B4A1F]
+          md:bg-transparent md:p-0 md:text-[#7C8C3D] md:font-semibold">
+  <i class="fa-regular fa-house"></i> Feed
+</a>
+        </li>
+        <li>
+          <a routerLink="/profile" aria-current="page"
+   class="block py-2 px-3 rounded-sm bg-[#C9D69A] hover:text-[#556B2F] text-[#3B4A1F]
+          md:bg-transparent md:p-0 md:text-[#7C8C3D] md:font-semibold">
+  <i class="fa-regular fa-user"></i> Profile
+</a>
+        </li>
+       <li>
+  <a routerLink="/notifications" aria-current="page"
+    class="block py-2 px-3 rounded-sm bg-[#C9D69A] hover:text-[#556B2F] text-[#3B4A1F]
+           md:bg-transparent md:p-0 md:text-[#7C8C3D] md:font-semibold">
+
+    <span class="relative">
+      <i class="fa-regular fa-comment"></i>
+
+      @if (unreadCount() > 0) {
+        <span class="absolute -top-2 -end-2 flex h-5 min-w-5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#A3B263] opacity-60"></span>
+          <span class="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#3B4A1F] px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white">
+            {{ unreadCount() > 99 ? '99+' : unreadCount() }}
+          </span>
+        </span>
+      }
+    </span>
+
+    Notifications
+  </a>
+</li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>
+

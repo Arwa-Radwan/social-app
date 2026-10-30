@@ -1,0 +1,74 @@
+<div class="mx-auto max-w-3xl px-4 py-6 mt-20">
+
+  <!-- Back -->
+  <button type="button" (click)="goBack()"
+    class="mb-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[#C9D69A] bg-white px-5 py-3 text-sm font-semibold text-[#3B4A1F] shadow-sm hover:bg-[#C9D69A]/40">
+    <i class="fa-solid fa-arrow-left text-xs"></i> Back
+  </button>
+
+  @if (detailsPost().user) {
+    <article class="overflow-hidden rounded-xl bg-white shadow-lg">
+
+    <!-- header -->
+    <!-- header -->
+    <div class="flex items-center justify-between border-b border-[#C9D69A]/60 px-6 py-5">
+      <div class="flex items-center gap-4">
+        <img [src]="detailsPost().user.photo" [alt]="detailsPost().user.name"
+          class="h-14 w-14 rounded-full object-cover" />
+        <div>
+          <h3 class="font-bold text-[#3B4A1F]">{{detailsPost().user.name}}</h3>
+          <p class="flex items-center gap-2 text-sm text-[#7C8C3D]">
+            <span>@{{detailsPost().user.username}}</span>
+            <span>·</span>
+            <span>{{detailsPost().createdAt | date : "short"}}</span>
+            <span>·</span>
+            <span class="inline-flex items-center gap-1">
+              <i class="fa-solid fa-earth-americas text-xs"></i> {{detailsPost().privacy}}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- زرار الـ ... + القايمة -->
+      <div class="relative">
+        <button type="button"
+          [id]="'postMenuButton' + detailsPost()._id"
+          [attr.data-dropdown-toggle]="'postMenu' + detailsPost()._id"
+          class="h-9 w-9 cursor-pointer rounded-full text-[#3B4A1F] hover:bg-[#C9D69A]/50">
+          <i class="fa-solid fa-ellipsis"></i>
+        </button>
+
+        <div [id]="'postMenu' + detailsPost()._id"
+          class="z-10 hidden w-44 rounded-lg border border-[#C9D69A] bg-white shadow-lg">
+          <ul class="p-2 text-sm font-medium text-[#3B4A1F]" [attr.aria-labelledby]="'postMenuButton' + detailsPost()._id">
+            <li>
+              <button type="button" class="flex w-full cursor-pointer items-center gap-2 rounded p-2 hover:bg-[#C9D69A]">
+                <i class="fa-regular fa-bookmark w-4"></i> Save post
+              </button>
+            </li>
+            @if (detailsPost().user._id == loggedUserData()._id) {
+              <li>
+                <button type="button" class="flex w-full cursor-pointer items-center gap-2 rounded p-2 hover:bg-[#C9D69A]">
+                  <i class="fa-solid fa-pen w-4"></i> Edit post
+                </button>
+              </li>
+              <li>
+                <button type="button" (click)="deletePost(detailsPost()._id)"
+                  class="flex w-full cursor-pointer items-center gap-2 rounded p-2 text-red-600 hover:bg-red-100">
+                  <i class="fa-regular fa-trash-can w-4"></i> Delete post
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- image -->
+    <img [src]="detailsPost().image" [alt]="detailsPost().user.name" class="w-full object-cover" />
+
+    <!-- counters -->
+<app-post-actions [post]="$any(detailsPost())" [showDetailsLink]="false" />
+  </article>
+  }
+</div>
